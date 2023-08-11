@@ -18,6 +18,8 @@ repositories {
 }
 
 dependencies {
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
     compileOnly "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT"
 }
 
@@ -34,6 +36,15 @@ java {
 tasks.withType(JavaCompile).configureEach {
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
         options.release = targetJavaVersion
+    }
+}
+
+task copyJarToBin {
+    delete("/Users/lexseifert/Desktop/Minecraft Server/plugins/Honey-1.0.jar")
+
+    copy {
+        from 'build/libs/Honey-1.0.jar'
+        into "/Users/lexseifert/Desktop/Minecraft Server/plugins"
     }
 }
 

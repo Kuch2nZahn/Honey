@@ -1,0 +1,17 @@
+prefix: Honey
+  
+#Developer settings, don't play around here if you don't know what you're doing!
+force_default_config: false
+copy_default_config: false
+
+#Plugin Language
+# de
+# en
+language: en
+
+#Messages in the Plugin
+message:
+    de:
+      plugin_started: "Der Plugin ist erfolgreich gestartet!"
+    en:
+      plugin_started: "Plugin enabled successfully!"
