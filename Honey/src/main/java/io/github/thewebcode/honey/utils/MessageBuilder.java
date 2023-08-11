@@ -2,6 +2,7 @@ package io.github.thewebcode.honey.utils;
 
 import io.github.thewebcode.honey.Honey;
 import io.github.thewebcode.honey.config.ConfigManager;
+import io.github.thewebcode.honey.message.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class MessageBuilder {
@@ -47,6 +48,32 @@ public class MessageBuilder {
     public static String getMessage(String key) {
         MessageBuilder messageBuilder = Honey.getInstance().getMessageBuilder();
         return messageBuilder.getWithKey(key);
+    }
+
+    public static void buildChatMessageAndAddToQueue(String message, MessageReceiver receiver, Message.Priority priority) {
+        Honey instance = Honey.getInstance();
+        MessagingService messagingService = instance.getMessagingService();
+        MessageBuilder messageBuilder = instance.getMessageBuilder();
+
+        ChatMessage chatMessage = new ChatMessage(messageBuilder.buildMessage(message), priority);
+        messagingService.addMessageToQueue(chatMessage, receiver);
+    }
+
+    public static void buildChatMessageAndAddToQueue(String message, MessageReceiver receiver) {
+        buildChatMessageAndAddToQueue(message, receiver, Message.Priority.DEFAULT);
+    }
+
+    public static void buildActionBarMessageAndAddToQueue(String message, MessageReceiver receiver, Message.Priority priority) {
+        Honey instance = Honey.getInstance();
+        MessagingService messagingService = instance.getMessagingService();
+        MessageBuilder messageBuilder = instance.getMessageBuilder();
+
+        ActionBarMessage actionBarMessage = new ActionBarMessage(messageBuilder.buildMessage(message), priority);
+        messagingService.addMessageToQueue(actionBarMessage, receiver);
+    }
+
+    public static void buildActionBarMessageAndAddToQueue(String message, MessageReceiver receiver) {
+        buildActionBarMessageAndAddToQueue(message, receiver, Message.Priority.DEFAULT);
     }
 
     public static String build(String msg) {
