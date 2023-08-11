@@ -1,8 +1,9 @@
-package io.github.thewebcode.honeycode;
+package io.github.thewebcode.honey;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class HoneyCode extends JavaPlugin {
+public final class Honey extends JavaPlugin {
+
     @Override
     public void onEnable() {
         // Plugin startup logic

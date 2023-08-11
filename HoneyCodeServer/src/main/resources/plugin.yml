@@ -1,7 +1,0 @@
-name: HoneyCode
-version: '${version}'
-main: io.github.thewebcode.honeycode.HoneyCode
-api-version: '1.20'
-prefix: HoneyCode
-authors: [ TheWebcode ]
-description: HoneyCode for Bukkit Servers
