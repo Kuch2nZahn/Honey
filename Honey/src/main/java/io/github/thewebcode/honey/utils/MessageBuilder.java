@@ -55,8 +55,8 @@ public class MessageBuilder {
         MessagingService messagingService = instance.getMessagingService();
         MessageBuilder messageBuilder = instance.getMessageBuilder();
 
-        ChatMessage chatMessage = new ChatMessage(messageBuilder.buildMessage(message), priority);
-        messagingService.addMessageToQueue(chatMessage, receiver);
+        ChatMessage chatMessage = new ChatMessage(messageBuilder.buildMessage(message), priority, receiver);
+        messagingService.addMessageToQueue(chatMessage);
     }
 
     public static void buildChatMessageAndAddToQueue(String message, MessageReceiver receiver) {
@@ -68,8 +68,8 @@ public class MessageBuilder {
         MessagingService messagingService = instance.getMessagingService();
         MessageBuilder messageBuilder = instance.getMessageBuilder();
 
-        ActionBarMessage actionBarMessage = new ActionBarMessage(messageBuilder.buildMessage(message), priority);
-        messagingService.addMessageToQueue(actionBarMessage, receiver);
+        ActionBarMessage actionBarMessage = new ActionBarMessage(messageBuilder.buildMessage(message), priority, receiver);
+        messagingService.addMessageToQueue(actionBarMessage);
     }
 
     public static void buildActionBarMessageAndAddToQueue(String message, MessageReceiver receiver) {

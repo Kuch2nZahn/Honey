@@ -2,102 +2,89 @@ package io.github.thewebcode.honey.message;
 
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Queue;
+import java.util.stream.Collectors;
 
 public class MessagingService {
-    private final HashMap<Message, MessageReceiver> messages;
-    private final HashMap<Player, ArrayList<Message>> playerMessages;
+    private final Queue<Message> defaultQueue;
+    private final Queue<Message> priorityQueue;
 
     public MessagingService() {
-        this.messages = new HashMap<>();
-        this.playerMessages = new HashMap<>();
+        this.defaultQueue = new LinkedList<>();
+        this.priorityQueue = new LinkedList<>();
     }
 
-    public void addMessageToQueue(Message message, MessageReceiver receiver) {
-        messages.put(message, receiver);
+    public void addMessageToQueue(Message message) {
+        Message.Priority priority = message.getPriority();
+        switch (priority) {
+            case LOW, DEFAULT -> defaultQueue.add(message);
+            case MEDIUM, HIGH -> priorityQueue.add(message);
+            case HIGHEST -> sendMessage(message);
+        }
     }
 
-    //Gets called every Message Tick (= 3 Sec)
     public void tick() {
-        for (Message message : messages.keySet()) {
-            MessageReceiver receiver = messages.get(message);
+        if (!priorityQueue.isEmpty()) {
+            List<Message> highMessages = priorityQueue.stream().filter(message -> message.getPriority().equals(Message.Priority.HIGH)).collect(Collectors.toList());
 
-            switch (receiver) {
-                case CONSOLE:
-                    Bukkit.getConsoleSender().sendMessage(message.getContent());
-                    messages.remove(message);
-                    break;
-                case ALL_SERVER_PLAYERS:
-                    Bukkit.getOnlinePlayers().forEach(player -> {
-                        sendToPlayer(message, player);
-                    });
-                    messages.remove(message);
-                    break;
-                case PLAYER:
-                    Player player = receiver.getReceiverAsPlayer();
-                    ArrayList<Message> newPlayerMessages = new ArrayList<>();
-
-                    if (playerMessages.containsKey(player)) {
-                        ArrayList<Message> alreadyInMessages = playerMessages.get(player);
-                        newPlayerMessages.addAll(alreadyInMessages);
-                    }
-
-                    messages.remove(message);
-                    playerMessages.put(player, newPlayerMessages);
-                    playerTick(player);
-                    break;
-            }
-        }
-    }
-
-    private void playerTick(Player player) {
-        ArrayList<Message> messagesForPlayer = playerMessages.get(player);
-        Message highesPriorityMessage = null;
-
-        for (Message message : messagesForPlayer) {
-            if (highesPriorityMessage == null) {
-                highesPriorityMessage = message;
-                continue;
+            if (!highMessages.isEmpty()) {
+                highMessages.forEach(message -> {
+                    sendMessage(message);
+                    priorityQueue.remove(message);
+                });
+                return;
             }
 
-            if (highesPriorityMessage.getPriority().getPriorityAsInt() < message.getPriority().getPriorityAsInt()) {
-                highesPriorityMessage = message;
-            }
-        }
-
-        messagesForPlayer.remove(highesPriorityMessage);
-
-        if (messagesForPlayer.isEmpty()) {
-            playerMessages.remove(player);
-        } else {
-            playerMessages.put(player, messagesForPlayer);
-        }
-
-        if (highesPriorityMessage == null) {
-            playerMessages.remove(player);
+            sendMessage(priorityQueue.remove());
             return;
         }
 
-        sendToPlayer(highesPriorityMessage, player);
+        if (defaultQueue.isEmpty()) return;
+
+        List<Message> defaultMessages = defaultQueue.stream().filter(message -> message.getPriority().equals(Message.Priority.DEFAULT)).collect(Collectors.toList());
+
+        if (!defaultMessages.isEmpty()) {
+            Message message = defaultMessages.get(0);
+            defaultQueue.remove(message);
+            sendMessage(message);
+            return;
+        }
+
+        sendMessage(defaultQueue.remove());
+    }
+
+    private void sendMessage(Message message) {
+        MessageReceiver receiver = message.getReceiver();
+
+        switch (receiver) {
+            case CONSOLE:
+                Bukkit.getConsoleSender().sendMessage(message.getContent());
+                break;
+            case ALL_SERVER_PLAYERS:
+                Bukkit.getOnlinePlayers().forEach(p -> sendToPlayer(message, p));
+                break;
+            case PLAYER:
+                Optional<Player> optionalPlayer = message.getReceiver().getReceiverAsPlayer();
+                Player player = optionalPlayer.orElseThrow();
+                sendToPlayer(message, player);
+                break;
+        }
     }
 
     private void sendToPlayer(Message message, Player player) {
-        String content = message.getContent();
-        TextComponent text = Component.text(content);
-
-        if (message instanceof ActionBarMessage) {
-            player.sendActionBar(text);
+        if (message instanceof ChatMessage) {
+            player.sendMessage(message.getContent());
             return;
         }
 
-        if (message instanceof ChatMessage) {
-            player.sendMessage(text);
+        if (message instanceof ActionBarMessage) {
+            player.sendActionBar(Component.text(message.getContent()));
         }
     }
-
 }

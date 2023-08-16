@@ -2,18 +2,20 @@ package io.github.thewebcode.honey.message;
 
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
+
 public enum MessageReceiver {
     CONSOLE,
     ALL_SERVER_PLAYERS,
     PLAYER;
 
-    private Player receiver;
+    private Optional<Player> receiver;
 
     public void setReceiver(Player receiver) {
-        this.receiver = receiver;
+        this.receiver = Optional.of(receiver);
     }
 
-    public Player getReceiverAsPlayer() {
+    public Optional<Player> getReceiverAsPlayer() {
         return receiver;
     }
 }
