@@ -1,6 +1,7 @@
 package io.github.thewebcode.honey.utils;
 
 import io.github.thewebcode.honey.Honey;
+import io.github.thewebcode.honey.event.impl.ThreeSecondTickEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -15,7 +16,7 @@ public class TimingService {
         BukkitTask threeSecondsRunnable = new BukkitRunnable() {
             @Override
             public void run() {
-                //TODO: Add Event
+                new ThreeSecondTickEvent().call();
                 Honey.getInstance().getMessagingService().tick();
             }
         }.runTaskTimer(Honey.getInstance(), 0, 20 * 3);

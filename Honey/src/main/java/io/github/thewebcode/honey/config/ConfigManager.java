@@ -57,7 +57,6 @@ public class ConfigManager {
 
     public void save() {
         try {
-            //pluginConfig.save(pluginConfigFile);
         } catch (Exception e) {
             e.printStackTrace();
         }

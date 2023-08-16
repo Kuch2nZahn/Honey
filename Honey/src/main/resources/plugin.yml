@@ -2,3 +2,5 @@ name: Honey
 version: '${version}'
 main: io.github.thewebcode.honey.Honey
 api-version: '1.20'
+commands:
+  test:
