@@ -68,7 +68,4 @@ processResources {
 }
 
 shadowJar {
-    relocate("io.github.cottonmc", "io.github.thewebcode.honey.libs.cottonmc")
-    relocate("org.apache.commons", "io.github.thewebcode.honey.libs.apachecommons")
-    relocate("com.google", "io.github.thewebcode.honey.libs.google")
 }

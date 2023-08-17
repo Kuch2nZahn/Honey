@@ -28,7 +28,7 @@ public class HoneyClient extends ChannelInitializer<Channel> {
     private final EventLoopGroup workerGroup = new NioEventLoopGroup();
     private Channel connectedChannel;
 
-    public HoneyClient(IPacketRegistry packetRegistry, Consumer<Future<? super Void>> doneCallback, PacketEventRegistry eventRegistry) {
+    public HoneyClient(InetSocketAddress toConnect, IPacketRegistry packetRegistry, Consumer<Future<? super Void>> doneCallback, PacketEventRegistry eventRegistry) throws InterruptedException {
         this.packetRegistry = packetRegistry;
         this.eventRegistry = eventRegistry;
         this.bootstrap = new Bootstrap()
@@ -37,12 +37,8 @@ public class HoneyClient extends ChannelInitializer<Channel> {
                 .handler(this)
                 .channel(NioSocketChannel.class);
 
-        try {
-            this.bootstrap.connect(new InetSocketAddress("127.0.0.1", 2323))
-                    .awaitUninterruptibly().sync().addListener(doneCallback::accept);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        this.bootstrap.connect(toConnect)
+                .awaitUninterruptibly().sync().addListener(doneCallback::accept);
     }
 
     @Override
@@ -62,5 +58,9 @@ public class HoneyClient extends ChannelInitializer<Channel> {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    public Channel getConnectedChannel() {
+        return connectedChannel;
     }
 }

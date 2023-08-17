@@ -2,6 +2,7 @@ package io.github.thewebcode.honey;
 
 import io.github.thewebcode.honey.command.TestCommand;
 import io.github.thewebcode.honey.config.ConfigManager;
+import io.github.thewebcode.honey.event.PacketEventListener;
 import io.github.thewebcode.honey.message.Message;
 import io.github.thewebcode.honey.message.MessageReceiver;
 import io.github.thewebcode.honey.message.MessagingService;
@@ -33,6 +34,7 @@ public final class Honey extends JavaPlugin {
         this.packetEventRegistry = new PacketEventRegistry();
         this.honeyPacketServer = new HoneyPacketServer(this.packetRegistry, (future) -> {
         }, packetEventRegistry);
+        packetEventRegistry.registerEvents(new PacketEventListener());
 
         String message = messageBuilder.getWithKey("plugin_started");
         MessageBuilder.buildChatMessageAndAddToQueue(message, MessageReceiver.CONSOLE, Message.Priority.HIGH);

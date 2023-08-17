@@ -33,7 +33,6 @@ public class RespondingPacket<T extends HoneyPacket> {
 
     public static void callReceive(HoneyPacket packet) {
         if (!pendingResponses.containsKey(packet.getSessionId())) return;
-
         pendingResponses.get(packet.getSessionId()).callResponseReceived(packet);
         pendingResponses.remove(packet.getSessionId());
 
