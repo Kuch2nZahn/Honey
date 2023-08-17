@@ -3,9 +3,9 @@
 	"id": "honeymod",
 	"version": "${version}",
 	"name": "HoneyMod",
-  "description": "The Honey Mod brings some new features that were not previously available in Minecraft",
+  "description": "This is an example description! Tell everyone what your mod is about!",
 	"authors": [
-      "TheWebcode"
+      "Me!"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",

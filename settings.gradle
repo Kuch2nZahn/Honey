@@ -1,0 +1,17 @@
+pluginManagement {
+    repositories {
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'HoneyCode'
+
+include(':Honey')
+project(':Honey').projectDir = new File(settingsDir, "./Honey")
+include(':HoneyMod')
+project(':HoneyMod').projectDir = new File(settingsDir, "./HoneyMod")
