@@ -7,11 +7,21 @@ copy_default_config: false
 #Plugin Language
 # de
 # en
-language: en
+# client - Uses the language the client has set. Either English or German.
+# If the Client uses a different language en will be the default value.
+language: client
 
+#Sends a little Message if a user with Honey joins the server.
+send_honey_welcome_toast: true
+#Logs in the Console if a Honey Users joins the Server
+log_honey_join_in_console: true
 #Messages in the Plugin
 message:
   de:
+    honey_welcome_title: "§eWillkommen!"
+    honey_welcome_description: "§aDieser Server benutzt Honey. Du bist erfolgreich verbunden."
     plugin_started: "Der Plugin ist erfolgreich gestartet!"
   en:
+    honey_welcome_title: "§eWelcome!"
+    honey_welcome_description: "§aThis server uses Honey. You´re now connected."
     plugin_started: "Plugin enabled successfully!"

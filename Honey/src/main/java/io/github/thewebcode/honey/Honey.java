@@ -8,6 +8,7 @@ import io.github.thewebcode.honey.message.MessageReceiver;
 import io.github.thewebcode.honey.message.MessagingService;
 import io.github.thewebcode.honey.netty.HoneyPacketServer;
 import io.github.thewebcode.honey.netty.event.PacketEventRegistry;
+import io.github.thewebcode.honey.netty.io.HoneyUUID;
 import io.github.thewebcode.honey.netty.registry.HoneyPacketRegistry;
 import io.github.thewebcode.honey.utils.MessageBuilder;
 import io.github.thewebcode.honey.utils.TimingService;
@@ -31,7 +32,7 @@ public final class Honey extends JavaPlugin {
         this.messagingService = new MessagingService();
         this.timingService = new TimingService();
         this.packetRegistry = new HoneyPacketRegistry();
-        this.packetEventRegistry = new PacketEventRegistry();
+        this.packetEventRegistry = new PacketEventRegistry(HoneyUUID.SERVER.getValue());
         this.honeyPacketServer = new HoneyPacketServer(this.packetRegistry, (future) -> {
         }, packetEventRegistry);
         packetEventRegistry.registerEvents(new PacketEventListener());

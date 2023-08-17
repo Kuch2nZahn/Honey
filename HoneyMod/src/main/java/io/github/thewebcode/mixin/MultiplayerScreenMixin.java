@@ -2,6 +2,7 @@ package io.github.thewebcode.mixin;
 
 import io.github.thewebcode.gui.ServerHoneyClientStartupLoadingScreen;
 import io.github.thewebcode.honey.netty.HoneyClient;
+import io.github.thewebcode.honey.netty.io.HoneyUUID;
 import io.github.thewebcode.honey.netty.packet.impl.RequestServerConnectionC2SPacket;
 import io.github.thewebcode.honey.netty.packet.impl.RequestServerConnectionS2CPacket;
 import io.github.thewebcode.honey.netty.packet.impl.responder.RequestServerConnectionResponderPacket;
@@ -12,6 +13,8 @@ import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
+import net.minecraft.client.toast.SystemToast;
+import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -52,13 +55,17 @@ public class MultiplayerScreenMixin {
 			@Override
 			public void run() {
 				HoneyClientManagingService honeyClientManagingService = HoneyClientManagingService.get();
-				MinecraftClient minecraftClient = MinecraftClient.getInstance();
-
 				ServerAddress serverAddress = ServerAddress.parse(entry.address);
 				InetSocketAddress address = new InetSocketAddress(serverAddress.getAddress().equalsIgnoreCase("localhost") ? "127.0.0.1" : serverAddress.getAddress(), 2323);
-				honeyClientManagingService.secureStartWithCallback(address, (future) -> {
-					finalizeClientStartup();
-				});
+				try {
+					honeyClientManagingService.secureStartWithCallback(address, (future) -> {
+						finalizeClientStartup();
+					});
+				} catch (Exception e) {
+					SystemToast toast = new SystemToast(SystemToast.Type.UNSECURE_SERVER_WARNING, Text.literal("§cConnection refused"), Text.literal("The Server may not use Honey."));
+					MinecraftClient.getInstance().getToastManager().add(toast);
+					connectToServer();
+				}
 			}
 		}, 5 * 1000);
 	}
@@ -78,6 +85,7 @@ public class MultiplayerScreenMixin {
 		HoneyClient client = honeyClientManagingService.getHoneyClient();
 
 		RequestServerConnectionC2SPacket packetToSend = new RequestServerConnectionC2SPacket();
+		packetToSend.setReceiverUUID(HoneyUUID.SERVER);
 
 		TimerTask timeoutTask = new TimerTask() {
 			@Override
@@ -89,12 +97,20 @@ public class MultiplayerScreenMixin {
 		};
 
 		timer.schedule(timeoutTask, 10 * 1000);
-		RequestServerConnectionResponderPacket requestPacket = new RequestServerConnectionResponderPacket(packetToSend, RequestServerConnectionS2CPacket.class, (received -> {
+		RequestServerConnectionResponderPacket requestPacket = new RequestServerConnectionResponderPacket(MinecraftClient.getInstance().getSession().getProfile().getId().toString(), packetToSend, RequestServerConnectionS2CPacket.class, (received -> {
 			timeoutTask.cancel();
 			boolean b = received.shouldJoin();
 			System.out.printf("Received should join Packet with value: %s%n", b);
 			if (b) {
 				connectToServer();
+			} else {
+				MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new ServerHoneyClientStartupLoadingScreen("Server denied connection")));
+				timer.schedule(new TimerTask() {
+					@Override
+					public void run() {
+						returnToTitleScreen();
+					}
+				}, 3 * 1000);
 			}
 		}));
 
@@ -102,7 +118,7 @@ public class MultiplayerScreenMixin {
 	}
 
 	private void connectToServer() {
-		MinecraftClient.getInstance().execute(() -> ConnectScreen.connect(new ServerHoneyClientStartupLoadingScreen("Connecting..."), MinecraftClient.getInstance(), ServerAddress.parse(toConnect.address), toConnect, false));
+		MinecraftClient.getInstance().execute(() -> ConnectScreen.connect(new TitleScreen(), MinecraftClient.getInstance(), ServerAddress.parse(toConnect.address), toConnect, false));
 	}
 
 	private void returnToTitleScreen() {

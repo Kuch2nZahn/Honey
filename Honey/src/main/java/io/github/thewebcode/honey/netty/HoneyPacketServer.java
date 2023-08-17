@@ -1,5 +1,6 @@
 package io.github.thewebcode.honey.netty;
 
+import io.github.thewebcode.honey.Honey;
 import io.github.thewebcode.honey.message.MessageReceiver;
 import io.github.thewebcode.honey.netty.event.PacketEventRegistry;
 import io.github.thewebcode.honey.netty.handler.PacketChannelInboundHandler;
@@ -62,6 +63,10 @@ public class HoneyPacketServer extends ChannelInitializer<Channel> {
     public void send(HoneyPacket packet) {
         if (this.connectedChannel == null) return;
         this.connectedChannel.writeAndFlush(packet);
+    }
+
+    public static void sendPacket(HoneyPacket packet) {
+        Honey.getInstance().getHoneyPacketServer().send(packet);
     }
 
     public void shutdown() {

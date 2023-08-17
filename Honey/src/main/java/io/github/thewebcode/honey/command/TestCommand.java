@@ -1,10 +1,10 @@
 package io.github.thewebcode.honey.command;
 
 import io.github.thewebcode.honey.Honey;
-import io.github.thewebcode.honey.gui.ExampleScreen;
 import io.github.thewebcode.honey.netty.HoneyPacketServer;
-import io.github.thewebcode.honey.netty.packet.impl.gui.ScreenPacketS2C;
-import io.github.thewebcode.honey.utils.ObjectHelper;
+import io.github.thewebcode.honey.netty.io.HoneyUUID;
+import io.github.thewebcode.honey.netty.packet.impl.HoneyToastS2CPacket;
+import io.github.thewebcode.honey.utils.MessageBuilder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,11 +14,15 @@ public class TestCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         HoneyPacketServer honeyPacketServer = Honey.getInstance().getHoneyPacketServer();
-        ScreenPacketS2C screenPacketS2C = new ScreenPacketS2C();
-        String json = ObjectHelper.gson.toJson(new ExampleScreen(null));
-        System.out.println("json = " + json);
-        screenPacketS2C.setScreen(json);
-        honeyPacketServer.send(screenPacketS2C);
+        HoneyToastS2CPacket toastPacket = new HoneyToastS2CPacket();
+        String toastTitle = MessageBuilder.getMessage("honey_welcome_title");
+        String toastDescription = MessageBuilder.getMessage("honey_welcome_de");
+        toastPacket.setSenderUUID(HoneyUUID.SERVER);
+        toastPacket.setReceiverUUID(HoneyUUID.ALL_PLAYERS);
+        toastPacket.setTitle(toastTitle);
+        toastPacket.setDescription(toastDescription);
+        toastPacket.setType(HoneyToastS2CPacket.Type.UNSECURE_SERVER_WARNING);
+        honeyPacketServer.send(toastPacket);
         return false;
     }
 }

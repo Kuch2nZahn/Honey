@@ -15,15 +15,16 @@ public class RespondingPacket<T extends HoneyPacket> {
     private final Class<T> responseType;
     private final Consumer<T> callback;
 
-    public RespondingPacket(HoneyPacket toSend, long timeout, Class<T> responseType, Consumer<T> callback) {
+    public RespondingPacket(String senderUUID, HoneyPacket toSend, long timeout, Class<T> responseType, Consumer<T> callback) {
         this.toSend = toSend;
+        toSend.setSenderUUID(senderUUID);
         this.timeout = timeout;
         this.responseType = responseType;
         this.callback = callback;
     }
 
-    public RespondingPacket(HoneyPacket toSend, Class<T> responseType, Consumer<T> callback) {
-        this(toSend, TimeUnit.SECONDS.toMillis(10), responseType, callback);
+    public RespondingPacket(String senderUUID, HoneyPacket toSend, Class<T> responseType, Consumer<T> callback) {
+        this(senderUUID, toSend, TimeUnit.SECONDS.toMillis(10), responseType, callback);
     }
 
     public void send(ChannelOutboundInvoker invoker) {

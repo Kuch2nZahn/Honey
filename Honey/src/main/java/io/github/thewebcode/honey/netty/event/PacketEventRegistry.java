@@ -9,6 +9,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PacketEventRegistry {
+    private final String receiverUUID;
+
+    public PacketEventRegistry(String receiverUUID) {
+        this.receiverUUID = receiverUUID;
+    }
     private final Set<RegisteredPacketSubscriber> subscribers = new HashSet<>();
 
     public void registerEvents(Object holder) {
@@ -16,6 +21,7 @@ public class PacketEventRegistry {
     }
 
     public void invoke(HoneyPacket packet, ChannelHandlerContext ctx) {
+        if (!packet.getReceiverUUID().equals(this.receiverUUID)) return;
         try {
             for (RegisteredPacketSubscriber subscriber : subscribers) {
                 subscriber.invoke(packet, ctx, Responder.forId(packet.getSessionId(), ctx));

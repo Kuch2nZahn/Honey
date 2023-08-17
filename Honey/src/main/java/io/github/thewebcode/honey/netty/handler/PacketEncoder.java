@@ -8,6 +8,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.EncoderException;
 import io.netty.handler.codec.MessageToByteEncoder;
 
+import java.nio.charset.StandardCharsets;
+
 public class PacketEncoder extends MessageToByteEncoder<HoneyPacket> {
     private final IPacketRegistry packetRegistry;
 
@@ -22,8 +24,20 @@ public class PacketEncoder extends MessageToByteEncoder<HoneyPacket> {
 
         byteBuf.writeInt(packetId);
         byteBuf.writeLong(packet.getSessionId());
+
+        String senderUUID = packet.getSenderUUID();
+        byte[] senderUUIDBytes = senderUUID.getBytes(StandardCharsets.UTF_8);
+        byteBuf.writeInt(senderUUIDBytes.length);
+        byteBuf.writeBytes(senderUUIDBytes);
+
+        String receiverUUID = packet.getReceiverUUID();
+        byte[] receiverUUIDBytes = receiverUUID.getBytes(StandardCharsets.UTF_8);
+        byteBuf.writeInt(receiverUUIDBytes.length);
+        byteBuf.writeBytes(receiverUUIDBytes);
+
         PacketBuffer buffer = new PacketBuffer();
         packet.write(buffer);
+
         byteBuf.writeBytes(buffer);
     }
 }
