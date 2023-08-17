@@ -16,10 +16,15 @@ repositories {
 		name = "CottonMC"
 		url = "https://server.bbkr.space/artifactory/libs-release"
 	}
+	maven {
+		name = "CottonMC"
+		url = "https://server.bbkr.space/artifactory/libs-release"
+	}
 }
 
 dependencies {
-	modImplementation files("../Honey/build/libs/Honey-1.0.jar")
+	modImplementation include("io.github.cottonmc:LibGui:8.0.2+1.20")
+	modImplementation(files("../Honey/build/libs/Honey-1.0.jar"))
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"

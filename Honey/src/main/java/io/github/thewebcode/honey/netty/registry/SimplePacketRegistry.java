@@ -1,10 +1,7 @@
 package io.github.thewebcode.honey.netty.registry;
 
 import io.github.thewebcode.honey.exception.PacketRegistrationException;
-import io.github.thewebcode.honey.message.Message;
-import io.github.thewebcode.honey.message.MessageReceiver;
 import io.github.thewebcode.honey.netty.packet.HoneyPacket;
-import io.github.thewebcode.honey.utils.MessageBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
@@ -32,7 +29,6 @@ public class SimplePacketRegistry implements IPacketRegistry {
         try {
             RegisteredPacket registeredPacket = new RegisteredPacket(packet);
             this.packets.put(packetId, registeredPacket);
-            MessageBuilder.buildChatMessageAndAddToQueue(String.format("Registered Packet from class: %s with Packet ID: %s", registeredPacket.getPacketClass().getSimpleName(), packetId), MessageReceiver.CONSOLE, Message.Priority.HIGH);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

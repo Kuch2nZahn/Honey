@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
 group = 'io.github.thewebcode'
@@ -30,6 +31,8 @@ dependencies {
     compileOnly "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT"
 }
 
+assemble.dependsOn(shadowJar)
+
 def targetJavaVersion = 17
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
@@ -50,7 +53,7 @@ task copyJarToBin {
     delete("/Users/lexseifert/Desktop/Minecraft Server/plugins/Honey-1.0.jar")
 
     copy {
-        from 'build/libs/Honey-1.0.jar'
+        from 'build/libs/Honey-1.0-all.jar'
         into "/Users/lexseifert/Desktop/Minecraft Server/plugins"
     }
 }
@@ -62,4 +65,10 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+shadowJar {
+    relocate("io.github.cottonmc", "io.github.thewebcode.honey.libs.cottonmc")
+    relocate("org.apache.commons", "io.github.thewebcode.honey.libs.apachecommons")
+    relocate("com.google", "io.github.thewebcode.honey.libs.google")
 }
