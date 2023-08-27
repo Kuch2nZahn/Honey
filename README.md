@@ -40,3 +40,20 @@ lot of new functions in the Minecraft server plugin development!
 - ❌ Not implemented
 - 🟡 Under development
 - ✅ Done
+
+## Version
+
+|  Minecraft Version| Forge Mod  | Fabric Mod | Plugin
+|--|--|--|--|
+|  1.20.1 | ❌ |🟡 |🟡 
+
+No Forge Mod is currently being developed, since Fabric is mostly used in newer Minecraft versions. A forge mod is not
+planned yet.
+
+- ❌ Not implemented
+- 🟡 Under development
+- ✅ Done
+
+## Contributors
+
+- TheWebcode
