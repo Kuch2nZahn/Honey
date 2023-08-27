@@ -9,6 +9,5 @@ public class ServerHoneyClientStartupLoadingScreen extends CottonClientScreen {
 
     @Override
     public void close() {
-        //Don't close the Screen
     }
 }

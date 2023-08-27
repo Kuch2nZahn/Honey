@@ -100,7 +100,6 @@ public class MultiplayerScreenMixin {
 		RequestServerConnectionResponderPacket requestPacket = new RequestServerConnectionResponderPacket(MinecraftClient.getInstance().getSession().getProfile().getId().toString(), packetToSend, RequestServerConnectionS2CPacket.class, (received -> {
 			timeoutTask.cancel();
 			boolean b = received.shouldJoin();
-			System.out.printf("Received should join Packet with value: %s%n", b);
 			if (b) {
 				connectToServer();
 			} else {

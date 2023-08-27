@@ -7,18 +7,7 @@ import io.github.thewebcode.honey.netty.io.HoneyUUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class HoneyPacket implements Encoder, Decoder {
-    /**
-     * Shows, where the packet came from
-     * Server: 0000
-     * Client: UUID of the Player
-     */
     private String senderUUID;
-    /**
-     * Shows, where the packet should belong to
-     * Server: 0000
-     * All_players: 1111
-     * Specific Player: Players UUID
-     */
     private String receiverUUID;
     private long sessionId = ThreadLocalRandom.current().nextLong();
 

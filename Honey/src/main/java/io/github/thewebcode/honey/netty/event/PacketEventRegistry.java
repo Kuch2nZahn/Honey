@@ -1,5 +1,6 @@
 package io.github.thewebcode.honey.netty.event;
 
+import io.github.thewebcode.honey.netty.io.HoneyUUID;
 import io.github.thewebcode.honey.netty.io.Responder;
 import io.github.thewebcode.honey.netty.packet.HoneyPacket;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,13 +22,16 @@ public class PacketEventRegistry {
     }
 
     public void invoke(HoneyPacket packet, ChannelHandlerContext ctx) {
-        if (!packet.getReceiverUUID().equals(this.receiverUUID)) return;
-        try {
-            for (RegisteredPacketSubscriber subscriber : subscribers) {
-                subscriber.invoke(packet, ctx, Responder.forId(packet.getSessionId(), ctx));
+        String packetReceiverUUID = packet.getReceiverUUID();
+
+        if (packetReceiverUUID.equalsIgnoreCase(HoneyUUID.ALL_PLAYERS.getValue()) || packetReceiverUUID.equalsIgnoreCase(this.receiverUUID)) {
+            try {
+                for (RegisteredPacketSubscriber subscriber : subscribers) {
+                    subscriber.invoke(packet, ctx, Responder.forId(packet.getSessionId(), ctx));
+                }
+            } catch (InvocationTargetException | IllegalAccessException e) {
+                e.printStackTrace();
             }
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            e.printStackTrace();
         }
     }
 }

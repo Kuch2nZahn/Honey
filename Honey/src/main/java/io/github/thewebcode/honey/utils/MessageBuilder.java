@@ -40,7 +40,6 @@ public class MessageBuilder {
         YamlConfiguration pluginConfig = configManager.getPluginConfig();
 
         String language = pluginConfig.getString("language");
-        //TODO: Make custom language for players using client & Packet
         if (language.equalsIgnoreCase("client")) language = "en";
         String fullkey = String.format("message.%s.%s", language, key);
 

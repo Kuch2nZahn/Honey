@@ -17,7 +17,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class PacketEventListener {
     @PacketSubscriber
     public void onServerConnectionRequest(RequestServerConnectionC2SPacket packet, ChannelHandlerContext context) {
-        System.out.printf("Received Connection Request from %s%n", packet.getSenderUUID());
         RequestServerConnectionS2CPacket response = new RequestServerConnectionS2CPacket();
         response.setSenderUUID(HoneyUUID.SERVER);
         response.setReceiverUUID(packet.getSenderUUID());

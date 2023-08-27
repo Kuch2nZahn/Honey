@@ -1,20 +1,35 @@
 package io.github.thewebcode.networking;
 
+import io.github.cottonmc.cotton.gui.widget.WGridPanel;
+import io.github.cottonmc.cotton.gui.widget.WLabel;
+import io.github.cottonmc.cotton.gui.widget.WToggleButton;
+import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.thewebcode.HoneyMod;
+import io.github.thewebcode.honey.gui.widget.HLabel;
+import io.github.thewebcode.honey.gui.widget.HToggleButton;
+import io.github.thewebcode.honey.gui.widget.HWidget;
 import io.github.thewebcode.honey.netty.HoneyClient;
 import io.github.thewebcode.honey.netty.event.PacketEventRegistry;
 import io.github.thewebcode.honey.netty.event.PacketSubscriber;
+import io.github.thewebcode.honey.netty.io.HoneyUUID;
 import io.github.thewebcode.honey.netty.packet.HoneyPacket;
 import io.github.thewebcode.honey.netty.packet.impl.HoneyToastS2CPacket;
+import io.github.thewebcode.honey.netty.packet.impl.gui.HoneyGuiButtonToggledC2SPacket;
+import io.github.thewebcode.honey.netty.packet.impl.gui.HoneyScreenS2CPacket;
 import io.github.thewebcode.honey.netty.registry.HoneyPacketRegistry;
 import io.github.thewebcode.honey.netty.registry.IPacketRegistry;
+import io.github.thewebcode.networking.gui.ClientHWidget;
+import io.github.thewebcode.networking.gui.ServerGuiDescription;
+import io.github.thewebcode.networking.gui.ServerGuiScreen;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.client.toast.Toast;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
@@ -31,14 +46,69 @@ public class HoneyClientManagingService {
         this.packetEventRegistry.registerEvents(new Object() {
             @PacketSubscriber
             public void onToastPacketReceive(HoneyToastS2CPacket packet, ChannelHandlerContext context) {
-                System.out.println("packet.getSenderUUID() = " + packet.getSenderUUID());
-
                 HoneyToastS2CPacket.Type rawType = packet.getType();
                 SystemToast.Type type = SystemToast.Type.valueOf(rawType.toString());
                 Text title = Text.literal(packet.getTitle());
                 Text description = Text.literal(packet.getDescription());
                 Toast toast = new SystemToast(type, title, description);
                 MinecraftClient.getInstance().getToastManager().add(toast);
+            }
+
+            @PacketSubscriber
+            public void onScreenPacketReceive(HoneyScreenS2CPacket packet, ChannelHandlerContext context) {
+                WGridPanel root = new WGridPanel();
+
+                root.setInsets(Insets.ROOT_PANEL);
+                int rootSizeX = packet.getSizeX();
+                int rootSizeY = packet.getSizeY();
+                root.setSize(rootSizeX, rootSizeY);
+
+                ArrayList<ClientHWidget> widgets = new ArrayList<>();
+
+                packet.getScreenWidgets().forEach(hWidget -> {
+                    try {
+                        HWidget.Type type = hWidget.widgetType();
+                        int x = hWidget.posX();
+                        int y = hWidget.posY();
+                        int width = hWidget.width();
+                        int height = hWidget.heigth();
+
+                        switch (type) {
+                            case LABEL:
+                                HLabel hLabel = (HLabel) hWidget;
+                                MutableText labelText = Text.literal(hLabel.getText());
+                                WLabel wLabel = new WLabel(labelText);
+                                root.add(wLabel, x, y, width, height);
+                                break;
+                            case TOGGLE_BUTTON:
+                                HToggleButton hToggleButton = (HToggleButton) hWidget;
+                                MutableText toggleButtonText = Text.literal(hToggleButton.getText());
+                                boolean toggleButtonToggled = hToggleButton.isToggled();
+
+                                WToggleButton wToggleButton = new WToggleButton(toggleButtonText);
+                                wToggleButton.setToggle(toggleButtonToggled);
+                                wToggleButton.setOnToggle((toggle) -> {
+                                    HoneyGuiButtonToggledC2SPacket honeyGuiButtonToggledC2SPacket = new HoneyGuiButtonToggledC2SPacket();
+                                    honeyGuiButtonToggledC2SPacket.setButtonID(hToggleButton.getButtonID());
+                                    honeyGuiButtonToggledC2SPacket.setNewValue(toggle);
+                                    honeyGuiButtonToggledC2SPacket.setReceiverUUID(HoneyUUID.SERVER);
+
+                                    HoneyClientManagingService.sendPacket(honeyGuiButtonToggledC2SPacket);
+                                });
+                                root.add(wToggleButton, x, y, width, height);
+                                break;
+                            case UNKNOWN:
+                                throw new IllegalStateException("Screen Packet contains unknown widget!");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                ServerGuiDescription description = new ServerGuiDescription(root, widgets);
+                ServerGuiScreen screen = new ServerGuiScreen(description);
+
+                MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(screen));
             }
         });
     }
@@ -72,7 +142,6 @@ public class HoneyClientManagingService {
     public void send(HoneyPacket packet) {
         if (honeyClient == null) return;
         UUID id = MinecraftClient.getInstance().getSession().getProfile().getId();
-        System.out.println("id = " + id);
         packet.setSenderUUID(id.toString());
         honeyClient.send(packet);
     }

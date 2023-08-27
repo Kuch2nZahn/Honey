@@ -24,6 +24,7 @@ public final class Honey extends JavaPlugin {
     private PacketEventRegistry packetEventRegistry;
     private HoneyPacketServer honeyPacketServer;
     private final boolean devMode = true;
+
     @Override
     public void onEnable() {
         instance = this;
