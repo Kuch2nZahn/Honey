@@ -1,5 +1,6 @@
 # Honey
 
+Framework for plugins that extends Minecraft in a new way
 ## What is Honey?
 
 Honey consists of two elements. A mod and a plugin for servers. The mod is quite boring for the user as it can't do
