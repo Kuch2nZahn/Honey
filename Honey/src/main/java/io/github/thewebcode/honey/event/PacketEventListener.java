@@ -2,6 +2,7 @@ package io.github.thewebcode.honey.event;
 
 import io.github.thewebcode.honey.Honey;
 import io.github.thewebcode.honey.config.ConfigManager;
+import io.github.thewebcode.honey.event.impl.PlayerUpdateLanguageEvent;
 import io.github.thewebcode.honey.message.MessageReceiver;
 import io.github.thewebcode.honey.netty.HoneyPacketServer;
 import io.github.thewebcode.honey.netty.event.PacketSubscriber;
@@ -25,6 +26,21 @@ public class PacketEventListener {
         response.setShouldJoin(true);
         response.setSessionId(packet.getSessionId());
         Honey.getInstance().getHoneyPacketServer().send(response);
+    }
+
+    @PacketSubscriber
+    public void onLanguageUpdatePacket(HoneyUpdateLanguageSettingC2SPacket packet) {
+        ConfigManager configManager = Honey.getInstance().getConfigManager();
+        YamlConfiguration pluginConfig = configManager.getPluginConfig();
+
+        boolean clientLanguage = pluginConfig.isSet("language") && pluginConfig.getString("language").equalsIgnoreCase("client");
+
+        if (clientLanguage) {
+            Player player = Bukkit.getPlayer(UUID.fromString(packet.getSenderUUID()));
+            HoneyUpdateLanguageSettingC2SPacket.Language language = packet.getLanguage();
+
+            new PlayerUpdateLanguageEvent(player, language).call();
+        }
     }
 
     @PacketSubscriber
@@ -54,11 +70,13 @@ public class PacketEventListener {
 
         if (sendWelcomeToast) {
             HoneyToastS2CPacket welcomeToast = new HoneyToastS2CPacket();
-            String toastTitle = MessageBuilder.getMessage("honey_welcome_title");
-            String toastDescription = MessageBuilder.getMessage("honey_welcome_description");
+
+            Player player = Bukkit.getPlayer(UUID.fromString(packet.getSenderUUID()));
+            String toastTitle = MessageBuilder.getTranslatableMessage(player, "honey_welcome_title");
+            String toastDescription = MessageBuilder.getTranslatableMessage(player, "honey_welcome_description");
             welcomeToast.setReceiverUUID(packet.getSenderUUID());
             welcomeToast.setSenderUUID(HoneyUUID.SERVER);
-            welcomeToast.setType(HoneyToastS2CPacket.Type.TUTORIAL_HINT);
+            welcomeToast.setType(HoneyToastS2CPacket.Type.PERIODIC_NOTIFICATION);
             welcomeToast.setTitle(toastTitle);
             welcomeToast.setDescription(toastDescription);
             HoneyPacketServer.sendPacket(welcomeToast);

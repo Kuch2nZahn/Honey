@@ -55,7 +55,6 @@ public class HoneyClientManagingService {
                 Text title = Text.literal(packet.getTitle());
                 Text description = Text.literal(packet.getDescription());
                 Toast toast = new SystemToast(type, title, description);
-                MinecraftClient.getInstance().getToastManager().clear();
                 MinecraftClient.getInstance().getToastManager().add(toast);
             }
 

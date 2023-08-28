@@ -15,13 +15,21 @@ language: client
 send_honey_welcome_toast: true
 #Logs in the Console if a Honey Users joins the Server
 log_honey_join_in_console: true
+#Show players in the menu that this is a honey server
+show_honey_server: true
 #Messages in the Plugin
 message:
   de:
+    language_update_toast_title: "Sprache aktualisiert"
+    language_update_toast_description: "Deine Sprache wurde aktualisiert zu §a%s"
     honey_welcome_title: "§eWillkommen!"
     honey_welcome_description: "§aDieser Server benutzt Honey. Du bist erfolgreich verbunden."
     plugin_started: "Der Plugin ist erfolgreich gestartet!"
+    command_no_player: "§cDu musst ein Spieler sein, um diesen Command zu benutzen!"
   en:
+    language_update_toast_title: "Language updated"
+    language_update_toast_description: "You´re language was updated to §a%s"
     honey_welcome_title: "§eWelcome!"
     honey_welcome_description: "§aThis server uses Honey. You´re now connected."
     plugin_started: "Plugin enabled successfully!"
+    command_no_player: "§cYou have to be a Player to execute this command!"

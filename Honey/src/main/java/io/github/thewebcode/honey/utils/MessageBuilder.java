@@ -3,10 +3,15 @@ package io.github.thewebcode.honey.utils;
 import io.github.thewebcode.honey.Honey;
 import io.github.thewebcode.honey.config.ConfigManager;
 import io.github.thewebcode.honey.message.*;
+import io.github.thewebcode.honey.netty.packet.impl.HoneyUpdateLanguageSettingC2SPacket;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
 
 public class MessageBuilder {
     private final String prefix;
+    private final HashMap<Player, HoneyUpdateLanguageSettingC2SPacket.Language> playerLanguageMap;
 
     public MessageBuilder() {
         ConfigManager configManager = Honey.getInstance().getConfigManager();
@@ -18,6 +23,15 @@ public class MessageBuilder {
         }
 
         this.prefix = pluginConfig.getString("prefix");
+        this.playerLanguageMap = new HashMap<>();
+    }
+
+    public void putPlayerLanguage(Player player, HoneyUpdateLanguageSettingC2SPacket.Language language) {
+        this.playerLanguageMap.put(player, language);
+    }
+
+    public HoneyUpdateLanguageSettingC2SPacket.Language getPlayerLanguage(Player player) {
+        return playerLanguageMap.getOrDefault(player, HoneyUpdateLanguageSettingC2SPacket.Language.EN);
     }
 
     public String addPrefix(String msg) {
@@ -44,6 +58,19 @@ public class MessageBuilder {
         String fullkey = String.format("message.%s.%s", language, key);
 
         return pluginConfig.getString(fullkey);
+    }
+
+    public static String getTranslatableMessage(Player player, String key) {
+        MessageBuilder messageBuilder = Honey.getInstance().getMessageBuilder();
+        HoneyUpdateLanguageSettingC2SPacket.Language playerLanguage = messageBuilder.getPlayerLanguage(player);
+        String value = playerLanguage.getValue();
+
+        String messageKey = String.format("message.%s.%s", value, key);
+
+        ConfigManager configManager = Honey.getInstance().getConfigManager();
+        YamlConfiguration pluginConfig = configManager.getPluginConfig();
+
+        return pluginConfig.isSet(messageKey) ? pluginConfig.getString(messageKey) : getMessage(key);
     }
 
     public static String getMessage(String key) {

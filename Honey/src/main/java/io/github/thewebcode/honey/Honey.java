@@ -2,6 +2,8 @@ package io.github.thewebcode.honey;
 
 import io.github.thewebcode.honey.command.TestCommand;
 import io.github.thewebcode.honey.config.ConfigManager;
+import io.github.thewebcode.honey.event.EventListener;
+import io.github.thewebcode.honey.event.EventManager;
 import io.github.thewebcode.honey.event.PacketEventListener;
 import io.github.thewebcode.honey.message.Message;
 import io.github.thewebcode.honey.message.MessageReceiver;
@@ -12,6 +14,8 @@ import io.github.thewebcode.honey.netty.io.HoneyUUID;
 import io.github.thewebcode.honey.netty.registry.HoneyPacketRegistry;
 import io.github.thewebcode.honey.utils.MessageBuilder;
 import io.github.thewebcode.honey.utils.TimingService;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Honey extends JavaPlugin {
@@ -23,6 +27,7 @@ public final class Honey extends JavaPlugin {
     private HoneyPacketRegistry packetRegistry;
     private PacketEventRegistry packetEventRegistry;
     private HoneyPacketServer honeyPacketServer;
+    private EventListener eventListener;
     private final boolean devMode = true;
 
     @Override
@@ -38,6 +43,8 @@ public final class Honey extends JavaPlugin {
         }, packetEventRegistry);
         packetEventRegistry.registerEvents(new PacketEventListener());
 
+        this.eventListener = new EventListener();
+
         String message = messageBuilder.getWithKey("plugin_started");
         MessageBuilder.buildChatMessageAndAddToQueue(message, MessageReceiver.CONSOLE, Message.Priority.HIGH);
 
@@ -46,6 +53,7 @@ public final class Honey extends JavaPlugin {
         }));
 
         registerCommands();
+        registerEvents();
     }
 
     @Override
@@ -59,6 +67,14 @@ public final class Honey extends JavaPlugin {
 
     private void registerCommands() {
         getCommand("test").setExecutor(new TestCommand());
+    }
+
+    private void registerEvents() {
+        PluginManager pluginManager = Bukkit.getPluginManager();
+
+        pluginManager.registerEvents(eventListener, this);
+
+        EventManager.register(eventListener);
     }
 
     public ConfigManager getConfigManager() {
@@ -79,6 +95,10 @@ public final class Honey extends JavaPlugin {
 
     public HoneyPacketServer getHoneyPacketServer() {
         return honeyPacketServer;
+    }
+
+    public EventListener getEventListener() {
+        return eventListener;
     }
 
     public boolean isDevMode() {

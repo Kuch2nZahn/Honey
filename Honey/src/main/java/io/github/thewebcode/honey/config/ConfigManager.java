@@ -11,14 +11,16 @@ import java.io.InputStreamReader;
 
 public class ConfigManager {
     private YamlConfiguration pluginConfig;
-    private final File pluginConfigFile;
+    private final File pluginConfigFile, serverIcon;
     private final File configFolder;
 
     public ConfigManager() {
         File folder = new File("./plugins/honey/");
         File dataFile = new File(folder, "honey-config.yml");
+        File serverIconFile = new File(folder, "honeylogo.png");
 
-        if (!dataFile.exists()) copyDefaultConfigToDataFile(dataFile);
+        if (!dataFile.exists()) copyResourceToFile(dataFile, "default-honey-config.yml");
+        if (!serverIconFile.exists()) copyResourceToFile(serverIconFile, "honeylogo.png");
 
         YamlConfiguration preConfig = YamlConfiguration.loadConfiguration(dataFile);
 
@@ -27,12 +29,12 @@ public class ConfigManager {
         boolean devMode = Honey.getInstance().isDevMode();
         if (devMode) {
             Bukkit.getLogger().warning("[Honey-Internal] Overwritting Config with default Config file because Dev Mode is turned on!");
-            copyDefaultConfigToDataFile(dataFile);
+            copyResourceToFile(dataFile, "default-honey-config.yml");
         }
 
         if (copyDefaultConfig && !devMode) {
             Bukkit.getLogger().warning("[Honey-Internal] Copying default Config File to normal Config, changes will be overwritten!");
-            copyDefaultConfigToDataFile(dataFile);
+            copyResourceToFile(dataFile, "default-honey-config.yml");
         }
 
         boolean forceDefaultConfig = preConfig.isSet("force_default_config") && preConfig.getBoolean("force_default_config");
@@ -44,11 +46,12 @@ public class ConfigManager {
         this.pluginConfig = YamlConfiguration.loadConfiguration(dataFile);
         this.configFolder = folder;
         this.pluginConfigFile = dataFile;
+        this.serverIcon = serverIconFile;
     }
 
-    private void copyDefaultConfigToDataFile(File configFile) {
+    private void copyResourceToFile(File configFile, String fileName) {
         try {
-            InputStream resource = Honey.getInstance().getResource("default-honey-config.yml");
+            InputStream resource = Honey.getInstance().getResource(fileName);
             FileUtils.copyInputStreamToFile(resource, configFile);
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,6 +63,10 @@ public class ConfigManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public File getServerIcon() {
+        return serverIcon;
     }
 
     public YamlConfiguration getPluginConfig() {
