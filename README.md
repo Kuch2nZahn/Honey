@@ -1,9 +1,9 @@
 # Honey
 
 ![version](https://img.shields.io/badge/Version%3A-1.0.0-s)
-![type](https://img.shields.io/github/v/tag/TheWebcode/Honey)
-![issues](https://img.shields.io/github/issues-raw/TheWebcode/Honey)
-![pull-requests](https://img.shields.io/github/issues-pr-raw/TheWebcode/Honey)
+![type](https://img.shields.io/github/v/tag/HoneyFromSpigot/Honey)
+![issues](https://img.shields.io/github/issues-raw/HoneyFromSpigot/Honey)
+![pull-requests](https://img.shields.io/github/issues-pr-raw/HoneyFromSpigot/Honey)
 
 Framework for plugins that extends Minecraft in a new way
 ## What is Honey?
