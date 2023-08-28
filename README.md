@@ -31,7 +31,7 @@ lot of new functions in the Minecraft server plugin development!
 | Gui Elements & Widgets                  | 🟡     | Basic Elements done, but there will be more in the future |
 | Custom Toast System                     | ✅      | Server can send custom Toasts to a client                 |
 | Automatic Client and Server System      | ✅      | Automatic Client Startup on Server join                   |
-| Honey Server Detection                  | ❌      | Detect whether a server uses the honey plugin or not      |
+| Honey Server Detection                  | ✅      | Detect whether a server uses the honey plugin or not      |
 | Event API for Devs                      | ❌      | Always adding some Events                                 |
 | Player specification                    | ✅      | Server can specify which player should receive packets    |
 | Data Warning                            | ❌      | Client is informed about data access by server            |
