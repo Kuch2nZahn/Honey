@@ -56,9 +56,7 @@ public final class Honey extends JavaPlugin {
         registerEvents();
     }
 
-    public static void main(String[] args) {
-        System.out.println("TOKEN: " + System.getenv("GITHUB_TOKEN"));
-    }
+
     @Override
     public void onDisable() {
         shutdown();
