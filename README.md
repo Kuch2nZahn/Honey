@@ -37,7 +37,7 @@ lot of new functions in the Minecraft server plugin development!
 | Data Warning                            | ❌      | Client is informed about data access by server            |
 | Key Data                                | ❌      | Sending pressed keys to the server                        |
 | Crash & Reload Detection                | ❌      | Detect when the server restarts, crashes or reloads       
-| Individual Language System              | ❌      | Individual language for every user                        
+| Individual Language System              | 🟡     | Individual language for every user                        
 
 - ❌ Not implemented
 - 🟡 Under development
