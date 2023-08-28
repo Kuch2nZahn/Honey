@@ -26,6 +26,8 @@ must confirm this.
 Now you know what honey is, and **the best thing is to just try it**! Start creating your own guis now and experience a
 lot of new functions in the Minecraft server plugin development!
 
+[You can read the wiki here](https://github.com/HoneyFromSpigot/Honey/wiki)
+
 ## Missing features / under development
 
 | Feature                                 | Status | Note                                                      
