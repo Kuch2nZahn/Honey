@@ -66,4 +66,4 @@ planned yet.
 
 ## Contributors
 
-- TheWebcode
+- TheWebcode (@HoneyFromSpigot)
