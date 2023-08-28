@@ -1,10 +1,12 @@
 package io.github.thewebcode.networking;
 
+import io.github.cottonmc.cotton.gui.widget.WButton;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WLabel;
 import io.github.cottonmc.cotton.gui.widget.WToggleButton;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.thewebcode.HoneyMod;
+import io.github.thewebcode.honey.gui.widget.HButton;
 import io.github.thewebcode.honey.gui.widget.HLabel;
 import io.github.thewebcode.honey.gui.widget.HToggleButton;
 import io.github.thewebcode.honey.gui.widget.HWidget;
@@ -13,7 +15,9 @@ import io.github.thewebcode.honey.netty.event.PacketEventRegistry;
 import io.github.thewebcode.honey.netty.event.PacketSubscriber;
 import io.github.thewebcode.honey.netty.io.HoneyUUID;
 import io.github.thewebcode.honey.netty.packet.HoneyPacket;
+import io.github.thewebcode.honey.netty.packet.impl.HoneyCloseScreenS2CPacket;
 import io.github.thewebcode.honey.netty.packet.impl.HoneyToastS2CPacket;
+import io.github.thewebcode.honey.netty.packet.impl.gui.HoneyGuiButtonPressedC2SPacket;
 import io.github.thewebcode.honey.netty.packet.impl.gui.HoneyGuiButtonToggledC2SPacket;
 import io.github.thewebcode.honey.netty.packet.impl.gui.HoneyScreenS2CPacket;
 import io.github.thewebcode.honey.netty.registry.HoneyPacketRegistry;
@@ -51,11 +55,18 @@ public class HoneyClientManagingService {
                 Text title = Text.literal(packet.getTitle());
                 Text description = Text.literal(packet.getDescription());
                 Toast toast = new SystemToast(type, title, description);
+                MinecraftClient.getInstance().getToastManager().clear();
                 MinecraftClient.getInstance().getToastManager().add(toast);
             }
 
             @PacketSubscriber
+            public void onCloseScreenPacket(HoneyCloseScreenS2CPacket packet) {
+                MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().currentScreen.close());
+            }
+
+            @PacketSubscriber
             public void onScreenPacketReceive(HoneyScreenS2CPacket packet, ChannelHandlerContext context) {
+                context.flush();
                 WGridPanel root = new WGridPanel();
 
                 root.setInsets(Insets.ROOT_PANEL);
@@ -97,6 +108,20 @@ public class HoneyClientManagingService {
                                 });
                                 root.add(wToggleButton, x, y, width, height);
                                 break;
+                            case BUTTON:
+                                HButton hButton = (HButton) hWidget;
+                                MutableText buttonText = Text.literal(hButton.getText());
+
+                                WButton wButton = new WButton(buttonText);
+
+                                wButton.setOnClick(() -> {
+                                    HoneyGuiButtonPressedC2SPacket honeyGuiButtonPressedC2SPacket = new HoneyGuiButtonPressedC2SPacket();
+                                    honeyGuiButtonPressedC2SPacket.setButtonID(hButton.getButtonID());
+                                    honeyGuiButtonPressedC2SPacket.setReceiverUUID(HoneyUUID.SERVER);
+                                    HoneyClientManagingService.sendPacket(honeyGuiButtonPressedC2SPacket);
+                                });
+                                root.add(wButton, x, y, width, height);
+                                break;
                             case UNKNOWN:
                                 throw new IllegalStateException("Screen Packet contains unknown widget!");
                         }
@@ -105,8 +130,11 @@ public class HoneyClientManagingService {
                     }
                 });
 
+
                 ServerGuiDescription description = new ServerGuiDescription(root, widgets);
-                ServerGuiScreen screen = new ServerGuiScreen(description);
+                if (packet.shouldValidate()) root.validate(description);
+
+                ServerGuiScreen screen = new ServerGuiScreen(description, packet.canCloseWithEsc());
 
                 MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(screen));
             }

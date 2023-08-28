@@ -6,13 +6,15 @@ import io.github.thewebcode.honey.message.MessageReceiver;
 import io.github.thewebcode.honey.netty.HoneyPacketServer;
 import io.github.thewebcode.honey.netty.event.PacketSubscriber;
 import io.github.thewebcode.honey.netty.io.HoneyUUID;
-import io.github.thewebcode.honey.netty.packet.impl.HoneyHelloC2SPacket;
-import io.github.thewebcode.honey.netty.packet.impl.HoneyToastS2CPacket;
-import io.github.thewebcode.honey.netty.packet.impl.RequestServerConnectionC2SPacket;
-import io.github.thewebcode.honey.netty.packet.impl.RequestServerConnectionS2CPacket;
+import io.github.thewebcode.honey.netty.packet.impl.*;
+import io.github.thewebcode.honey.netty.packet.impl.gui.HoneyGuiButtonPressedC2SPacket;
 import io.github.thewebcode.honey.utils.MessageBuilder;
 import io.netty.channel.ChannelHandlerContext;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class PacketEventListener {
     @PacketSubscriber
@@ -25,6 +27,20 @@ public class PacketEventListener {
         Honey.getInstance().getHoneyPacketServer().send(response);
     }
 
+    @PacketSubscriber
+    public void onReceiveButtonPressed(HoneyGuiButtonPressedC2SPacket packet, ChannelHandlerContext context) {
+        String buttonID = packet.getButtonID();
+
+        if (buttonID.equalsIgnoreCase("gui_button_close")) {
+            UUID uuid = UUID.fromString(packet.getSenderUUID());
+            Player player = Bukkit.getPlayer(uuid);
+
+            HoneyCloseScreenS2CPacket honeyCloseScreenS2CPacket = new HoneyCloseScreenS2CPacket();
+            honeyCloseScreenS2CPacket.setReceiverUUID(packet.getSenderUUID());
+            honeyCloseScreenS2CPacket.setSenderUUID(HoneyUUID.SERVER);
+            HoneyPacketServer.sendPacket(honeyCloseScreenS2CPacket);
+        }
+    }
     @PacketSubscriber
     public void onReceiveHello(HoneyHelloC2SPacket packet, ChannelHandlerContext context) {
         String playerName = packet.getPlayerName();

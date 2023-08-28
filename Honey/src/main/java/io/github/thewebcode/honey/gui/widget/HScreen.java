@@ -12,4 +12,8 @@ public interface HScreen {
     default boolean validate() {
         return true;
     }
+
+    default boolean canCloseWithEsc() {
+        return true;
+    }
 }

@@ -42,4 +42,7 @@ public abstract class HoneyPacket implements Encoder, Decoder {
     public String getReceiverUUID() {
         return receiverUUID;
     }
+
+    public void toBytes() {
+    }
 }

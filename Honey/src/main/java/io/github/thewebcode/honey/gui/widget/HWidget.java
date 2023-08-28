@@ -14,6 +14,7 @@ public interface HWidget {
     enum Type {
         LABEL,
         TOGGLE_BUTTON,
+        BUTTON,
         UNKNOWN
     }
 }

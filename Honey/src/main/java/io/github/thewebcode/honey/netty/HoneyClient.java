@@ -7,10 +7,7 @@ import io.github.thewebcode.honey.netty.handler.PacketEncoder;
 import io.github.thewebcode.honey.netty.packet.HoneyPacket;
 import io.github.thewebcode.honey.netty.registry.IPacketRegistry;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.jetbrains.annotations.NotNull;
@@ -43,7 +40,8 @@ public class HoneyClient extends ChannelInitializer<Channel> {
 
     @Override
     protected void initChannel(@NotNull Channel channel) throws Exception {
-        channel.pipeline().addLast(new PacketDecoder(packetRegistry), new PacketEncoder(packetRegistry), new PacketChannelInboundHandler(eventRegistry));
+        ChannelPipeline pipeline = channel.pipeline();
+        pipeline.addLast(new PacketDecoder(packetRegistry), new PacketEncoder(packetRegistry), new PacketChannelInboundHandler(eventRegistry));
         this.connectedChannel = channel;
     }
 
