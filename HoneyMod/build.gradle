@@ -12,9 +12,15 @@ base {
 
 repositories {
 	mavenLocal()
+	mavenCentral()
 	maven {
 		name = "CottonMC"
 		url = "https://server.bbkr.space/artifactory/libs-release"
+	}
+
+	maven {
+		name = "MavenCentral"
+		url = "https://s01.oss.sonatype.org/content/repositories/releases/"
 	}
 }
 

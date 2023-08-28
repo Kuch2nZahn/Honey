@@ -28,10 +28,10 @@
           "name": "Honey-1.0.jar",
           "url": "Honey-1.0.jar",
           "size": 105085,
-          "sha512": "c6c0d4296038cedb0ce0744d3ce3041405d1ade0fcccc20436973a5e45f527219defd715b1e6bd0469cc188ede3d5c0a97a2badc60ef7dbbb1111f01f085ac1f",
-          "sha256": "7cab2e00bf4c69db8591819d34568060f70142df4393f5b0e5e51d4cd0030b2f",
-          "sha1": "386ff761d21c04766b2b7087caa3983dd9f760f8",
-          "md5": "73f917eff088d3391c58577ea887bc07"
+          "sha512": "13012d4b98b8799b0447a7c78d123e5efc9172f53874f8028b64addec37453847ec78e5beacbfaf25ba603ed5370e623fe460613ad81525ffc40ed6f7d9aff3d",
+          "sha256": "0bf54ae98e1c434df27a1e1357ab8f1a692417fbe9eadcc2033c48fb552162a5",
+          "sha1": "10215ae8c966407baa4c5982dec5f7b145d488fc",
+          "md5": "95bca06654697aeec0c9bdf2ddefc6a3"
         }
       ]
     },
@@ -79,10 +79,10 @@
           "name": "Honey-1.0.jar",
           "url": "Honey-1.0.jar",
           "size": 105085,
-          "sha512": "c6c0d4296038cedb0ce0744d3ce3041405d1ade0fcccc20436973a5e45f527219defd715b1e6bd0469cc188ede3d5c0a97a2badc60ef7dbbb1111f01f085ac1f",
-          "sha256": "7cab2e00bf4c69db8591819d34568060f70142df4393f5b0e5e51d4cd0030b2f",
-          "sha1": "386ff761d21c04766b2b7087caa3983dd9f760f8",
-          "md5": "73f917eff088d3391c58577ea887bc07"
+          "sha512": "13012d4b98b8799b0447a7c78d123e5efc9172f53874f8028b64addec37453847ec78e5beacbfaf25ba603ed5370e623fe460613ad81525ffc40ed6f7d9aff3d",
+          "sha256": "0bf54ae98e1c434df27a1e1357ab8f1a692417fbe9eadcc2033c48fb552162a5",
+          "sha1": "10215ae8c966407baa4c5982dec5f7b145d488fc",
+          "md5": "95bca06654697aeec0c9bdf2ddefc6a3"
         }
       ]
     },
@@ -99,10 +99,10 @@
           "name": "Honey-1.0-all.jar",
           "url": "Honey-1.0-all.jar",
           "size": 79717004,
-          "sha512": "4d723489ce4542d99c410a14efabdd419a7b0177500c33f708fef33063d369f3622aea121e98bee143b6f6dcf0eabc97e81b31b25d28e03c055e9bd6844366c6",
-          "sha256": "46439674a0b4d1eead7326dc6d396a550fd590d4fb5072f4c275c46aa0c4d1e4",
-          "sha1": "1e36fd77416d6fb7e138d6fda5324b96216fd22c",
-          "md5": "21810c73917884ecdad938865e39d0b6"
+          "sha512": "1a27a46d5ed993133a78f780f10ca1ba279a147985d5491bb28ee01d3f3dda95f6643faf0f0fad768e46e91d275ea94f3e56a21d3a1f2bad096651c71c92fc15",
+          "sha256": "1f9023707be55c6106a137853cd30f97135a477035411df6ff126e3fb55f12da",
+          "sha1": "9ff1357d4799f64a98104275b293aabd794df7eb",
+          "md5": "5c871d8c4d6f90a92c37800810596655"
         }
       ]
     }
