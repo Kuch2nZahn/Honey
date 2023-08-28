@@ -76,8 +76,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/HoneyFromBukkit/Honey")
             credentials {
-                username = System.getenv("HoneyFromBukkit")
-                password = System.getenv("GITHUB_TOKEN")
+                username = "HoneyFromBukkit"
+                password = properties.get("github_token")
             }
         }
     }

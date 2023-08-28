@@ -1,0 +1,110 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "io.github.thewebcode",
+    "module": "Honey",
+    "version": "1.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "Honey-1.0.jar",
+          "url": "Honey-1.0.jar",
+          "size": 105085,
+          "sha512": "c6c0d4296038cedb0ce0744d3ce3041405d1ade0fcccc20436973a5e45f527219defd715b1e6bd0469cc188ede3d5c0a97a2badc60ef7dbbb1111f01f085ac1f",
+          "sha256": "7cab2e00bf4c69db8591819d34568060f70142df4393f5b0e5e51d4cd0030b2f",
+          "sha1": "386ff761d21c04766b2b7087caa3983dd9f760f8",
+          "md5": "73f917eff088d3391c58577ea887bc07"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "io.github.cottonmc",
+          "module": "LibGui",
+          "version": {
+            "requires": "8.0.2+1.20"
+          }
+        },
+        {
+          "group": "com.google.code.gson",
+          "module": "gson",
+          "version": {
+            "requires": "2.7"
+          }
+        },
+        {
+          "group": "commons-io",
+          "module": "commons-io",
+          "version": {
+            "requires": "2.7"
+          }
+        },
+        {
+          "group": "org.spigotmc",
+          "module": "spigot",
+          "version": {
+            "requires": "1.20.1-R0.1-SNAPSHOT"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "Honey-1.0.jar",
+          "url": "Honey-1.0.jar",
+          "size": 105085,
+          "sha512": "c6c0d4296038cedb0ce0744d3ce3041405d1ade0fcccc20436973a5e45f527219defd715b1e6bd0469cc188ede3d5c0a97a2badc60ef7dbbb1111f01f085ac1f",
+          "sha256": "7cab2e00bf4c69db8591819d34568060f70142df4393f5b0e5e51d4cd0030b2f",
+          "sha1": "386ff761d21c04766b2b7087caa3983dd9f760f8",
+          "md5": "73f917eff088d3391c58577ea887bc07"
+        }
+      ]
+    },
+    {
+      "name": "shadowRuntimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "shadowed",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "Honey-1.0-all.jar",
+          "url": "Honey-1.0-all.jar",
+          "size": 79717004,
+          "sha512": "4d723489ce4542d99c410a14efabdd419a7b0177500c33f708fef33063d369f3622aea121e98bee143b6f6dcf0eabc97e81b31b25d28e03c055e9bd6844366c6",
+          "sha256": "46439674a0b4d1eead7326dc6d396a550fd590d4fb5072f4c275c46aa0c4d1e4",
+          "sha1": "1e36fd77416d6fb7e138d6fda5324b96216fd22c",
+          "md5": "21810c73917884ecdad938865e39d0b6"
+        }
+      ]
+    }
+  ]
+}
