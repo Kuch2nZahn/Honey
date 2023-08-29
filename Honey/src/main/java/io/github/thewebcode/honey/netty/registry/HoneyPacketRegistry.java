@@ -17,5 +17,6 @@ public class HoneyPacketRegistry extends SimplePacketRegistry {
         registerPacket(7, HoneyGuiButtonPressedC2SPacket.class);
         registerPacket(8, HoneyCloseScreenS2CPacket.class);
         registerPacket(9, HoneyUpdateLanguageSettingC2SPacket.class);
+        registerPacket(10, HoneyServerReloadS2CPacket.class);
     }
 }

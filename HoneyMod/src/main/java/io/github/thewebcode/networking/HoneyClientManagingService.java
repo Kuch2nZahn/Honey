@@ -16,6 +16,7 @@ import io.github.thewebcode.honey.netty.event.PacketSubscriber;
 import io.github.thewebcode.honey.netty.io.HoneyUUID;
 import io.github.thewebcode.honey.netty.packet.HoneyPacket;
 import io.github.thewebcode.honey.netty.packet.impl.HoneyCloseScreenS2CPacket;
+import io.github.thewebcode.honey.netty.packet.impl.HoneyServerReloadS2CPacket;
 import io.github.thewebcode.honey.netty.packet.impl.HoneyToastS2CPacket;
 import io.github.thewebcode.honey.netty.packet.impl.gui.HoneyGuiButtonPressedC2SPacket;
 import io.github.thewebcode.honey.netty.packet.impl.gui.HoneyGuiButtonToggledC2SPacket;
@@ -48,6 +49,10 @@ public class HoneyClientManagingService {
         this.packetEventRegistry = new PacketEventRegistry(MinecraftClient.getInstance().getSession().getProfile().getId().toString());
 
         this.packetEventRegistry.registerEvents(new Object() {
+            @PacketSubscriber
+            public void onServerReload(HoneyServerReloadS2CPacket packet) {
+                MinecraftClient.getInstance().getNetworkHandler().getConnection().disconnect(Text.literal("§cThe Server is reloading. Please reconnect in a few seconds."));
+            }
             @PacketSubscriber
             public void onToastPacketReceive(HoneyToastS2CPacket packet, ChannelHandlerContext context) {
                 HoneyToastS2CPacket.Type rawType = packet.getType();

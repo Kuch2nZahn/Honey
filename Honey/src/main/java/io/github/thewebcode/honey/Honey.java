@@ -11,6 +11,7 @@ import io.github.thewebcode.honey.message.MessagingService;
 import io.github.thewebcode.honey.netty.HoneyPacketServer;
 import io.github.thewebcode.honey.netty.event.PacketEventRegistry;
 import io.github.thewebcode.honey.netty.io.HoneyUUID;
+import io.github.thewebcode.honey.netty.packet.impl.HoneyServerReloadS2CPacket;
 import io.github.thewebcode.honey.netty.registry.HoneyPacketRegistry;
 import io.github.thewebcode.honey.utils.MessageBuilder;
 import io.github.thewebcode.honey.utils.TimingService;
@@ -59,6 +60,10 @@ public final class Honey extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        HoneyServerReloadS2CPacket reloadS2CPacket = new HoneyServerReloadS2CPacket();
+        reloadS2CPacket.setReceiverUUID(HoneyUUID.ALL_PLAYERS);
+        reloadS2CPacket.setSenderUUID(HoneyUUID.SERVER);
+        HoneyPacketServer.sendPacket(reloadS2CPacket);
         shutdown();
     }
 

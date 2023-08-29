@@ -43,7 +43,7 @@ lot of new functions in the Minecraft server plugin development!
 | Player specification                    | ✅      | Server can specify which player should receive packets    |
 | Data Warning                            | ❌      | Client is informed about data access by server            |
 | Key Data                                | ❌      | Sending pressed keys to the server                        |
-| Crash & Reload Detection                | ❌      | Detect when the server restarts, crashes or reloads       
+| Crash & Reload Detection                | ✅      | Detect when the server restarts, crashes or reloads       
 | Individual Language System              | ✅      | Individual language for every user                        
 
 - ❌ Not implemented
