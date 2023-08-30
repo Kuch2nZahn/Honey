@@ -32,7 +32,7 @@ lot of new functions in the Minecraft server plugin development!
 
 | Feature                                 | Status | Note                                                      
 |-----------------------------------------|:--------:|-----------------------------------------------------------|
-| Custom Guis                             | ❌      | It works, but not without errors                          |
+| Custom Guis                             | ✅      | Works pretty well                          |
 | Communication between Server and Client | ✅      | Communication with Packets                                |
 | Honey Packet System                     | ✅      | Packet System for communication between client & server   |
 | Gui Elements & Widgets                  | 🟡     | Basic Elements done, but there will be more in the future |
