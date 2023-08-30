@@ -1,6 +1,6 @@
 # Honey
 
-![version](https://img.shields.io/badge/Version%3A-1.1.0-s)
+![version](https://img.shields.io/badge/Version%3A-1.2.1-s)
 ![GitHub tag (with filter)](https://img.shields.io/github/v/tag/HoneyFromSpigot/Honey)
 ![issues](https://img.shields.io/github/issues-raw/HoneyFromSpigot/Honey)
 ![pull-requests](https://img.shields.io/github/issues-pr-raw/HoneyFromSpigot/Honey)
