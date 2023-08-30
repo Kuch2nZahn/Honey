@@ -31,7 +31,7 @@ lot of new functions in the Minecraft server plugin development!
 ## Missing features / under development
 
 | Feature                                 | Status | Note                                                      
-|-----------------------------------------|--------|-----------------------------------------------------------|
+|-----------------------------------------|:--------:|-----------------------------------------------------------|
 | Custom Guis                             | ❌      | It works, but not without errors                          |
 | Communication between Server and Client | ✅      | Communication with Packets                                |
 | Honey Packet System                     | ✅      | Packet System for communication between client & server   |
