@@ -24,7 +24,7 @@ public class PacketEventRegistry {
     public void invoke(HoneyPacket packet, ChannelHandlerContext ctx) {
         String packetReceiverUUID = packet.getReceiverUUID();
 
-        if (packetReceiverUUID.equalsIgnoreCase(HoneyUUID.ALL_PLAYERS.getValue()) || packetReceiverUUID.equalsIgnoreCase(this.receiverUUID)) {
+        if (packetReceiverUUID.equalsIgnoreCase(HoneyUUID.ALL_PLAYERS.getValue()) || packetReceiverUUID.equalsIgnoreCase(receiverUUID)) {
             try {
                 for (RegisteredPacketSubscriber subscriber : subscribers) {
                     subscriber.invoke(packet, ctx, Responder.forId(packet.getSessionId(), ctx));

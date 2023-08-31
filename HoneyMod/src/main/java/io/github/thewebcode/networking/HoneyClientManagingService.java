@@ -26,7 +26,6 @@ import io.github.thewebcode.honey.netty.registry.IPacketRegistry;
 import io.github.thewebcode.networking.gui.ClientHWidget;
 import io.github.thewebcode.networking.gui.ServerGuiDescription;
 import io.github.thewebcode.networking.gui.ServerGuiScreen;
-import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.client.toast.Toast;
@@ -54,7 +53,7 @@ public class HoneyClientManagingService {
                 MinecraftClient.getInstance().getNetworkHandler().getConnection().disconnect(Text.literal("§cThe Server is reloading. Please reconnect in a few seconds."));
             }
             @PacketSubscriber
-            public void onToastPacketReceive(HoneyToastS2CPacket packet, ChannelHandlerContext context) {
+            public void onToastPacketReceive(HoneyToastS2CPacket packet) {
                 HoneyToastS2CPacket.Type rawType = packet.getType();
                 SystemToast.Type type = SystemToast.Type.valueOf(rawType.toString());
                 Text title = Text.literal(packet.getTitle());
@@ -69,8 +68,7 @@ public class HoneyClientManagingService {
             }
 
             @PacketSubscriber
-            public void onScreenPacketReceive(HoneyScreenS2CPacket packet, ChannelHandlerContext context) {
-                context.flush();
+            public void onScreenPacketReceive(HoneyScreenS2CPacket packet) {
                 WGridPanel root = new WGridPanel();
 
                 root.setInsets(Insets.ROOT_PANEL);
