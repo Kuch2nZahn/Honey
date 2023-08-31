@@ -1,6 +1,6 @@
 # Honey
 
-![version](https://img.shields.io/badge/Version%3A-1.1.0-s)
+![version](https://img.shields.io/badge/Version%3A-1.2.1-s)
 ![GitHub tag (with filter)](https://img.shields.io/github/v/tag/HoneyFromSpigot/Honey)
 ![issues](https://img.shields.io/github/issues-raw/HoneyFromSpigot/Honey)
 ![pull-requests](https://img.shields.io/github/issues-pr-raw/HoneyFromSpigot/Honey)
@@ -31,8 +31,8 @@ lot of new functions in the Minecraft server plugin development!
 ## Missing features / under development
 
 | Feature                                 | Status | Note                                                      
-|-----------------------------------------|--------|-----------------------------------------------------------|
-| Custom Guis                             | ❌      | It works, but not without errors                          |
+|-----------------------------------------|:--------:|-----------------------------------------------------------|
+| Custom Guis                             | ✅      | Works pretty well                          |
 | Communication between Server and Client | ✅      | Communication with Packets                                |
 | Honey Packet System                     | ✅      | Packet System for communication between client & server   |
 | Gui Elements & Widgets                  | 🟡     | Basic Elements done, but there will be more in the future |
@@ -55,7 +55,7 @@ lot of new functions in the Minecraft server plugin development!
 |  Minecraft Version| Forge Mod  | Fabric Mod | Plugin
 |--|--|--|--|
 |  1.20.1 | ❌ |🟡 |🟡 
-|  [1.20.1 (beta1.1.0a)](https://github.com/HoneyFromSpigot/Honey/releases/tag/beta1.1.0a) | ❌ |✅ |✅ 
+|  [1.20.1 (stable1.2.1)](https://github.com/HoneyFromSpigot/Honey/releases/tag/stable1.2.1) | ❌ |✅ |✅ 
 
 No Forge Mod is currently being developed, since Fabric is mostly used in newer Minecraft versions. A forge mod is not
 planned yet.
