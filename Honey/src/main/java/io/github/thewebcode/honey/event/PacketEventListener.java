@@ -39,6 +39,7 @@ public class PacketEventListener {
             Player player = Bukkit.getPlayer(UUID.fromString(packet.getSenderUUID()));
             HoneyUpdateLanguageSettingC2SPacket.Language language = packet.getLanguage();
 
+            if (player == null) return;
             new PlayerUpdateLanguageEvent(player, language).call();
         }
     }
