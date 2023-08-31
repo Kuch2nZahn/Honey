@@ -14,6 +14,13 @@ import java.util.List;
 public class ExampleScreen implements HScreen {
     @Override
     public List<HWidget> getWidgets() {
+        ExamplePacket packet = new ExamplePacket("hello!", 1);
+        packet.setSenderUUID(HoneyUUID.SERVER);
+        packet.setReceiverUUID(HoneyUUID.ALL_PLAYERS);
+
+        HoneyPacketServer.sendPacket(packet);
+
+
         return Arrays.asList(
                 new HLabel("Example Screen", 4, 0, 4, 1),
                 new HButton("Close", "gui_button_close", 1, 4, 8, 2)

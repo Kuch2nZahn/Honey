@@ -11,6 +11,7 @@ import io.github.thewebcode.honey.message.MessagingService;
 import io.github.thewebcode.honey.netty.HoneyPacketServer;
 import io.github.thewebcode.honey.netty.event.PacketEventRegistry;
 import io.github.thewebcode.honey.netty.io.HoneyUUID;
+import io.github.thewebcode.honey.netty.packet.HoneyPacket;
 import io.github.thewebcode.honey.netty.packet.impl.HoneyServerReloadS2CPacket;
 import io.github.thewebcode.honey.netty.registry.HoneyPacketRegistry;
 import io.github.thewebcode.honey.utils.MessageBuilder;
@@ -29,7 +30,7 @@ public final class Honey extends JavaPlugin {
     private PacketEventRegistry packetEventRegistry;
     private HoneyPacketServer honeyPacketServer;
     private EventListener eventListener;
-    private final boolean devMode = true;
+    private final boolean devMode = false;
 
     @Override
     public void onEnable() {
@@ -72,7 +73,7 @@ public final class Honey extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("test").setExecutor(new TestCommand());
+        if (devMode) getCommand("test").setExecutor(new TestCommand());
     }
 
     private void registerEvents() {
@@ -109,6 +110,10 @@ public final class Honey extends JavaPlugin {
 
     public boolean isDevMode() {
         return devMode;
+    }
+
+    public static void sendPacket(HoneyPacket packet) {
+        getInstance().getHoneyPacketServer().send(packet);
     }
 
     public static Honey getInstance() {
